@@ -1,9 +1,13 @@
-from gpiozero import led, button
+import jetson.GPIO as GPIO
+import LiDAR as LiDAR
 import math
 import thread
 import time
+import serial 
+
 
 def main():
- print("Starting the program...")
-
+ GPIO.setmode(GPIO.BOARD)
+ 
 main()
+
