@@ -5,7 +5,7 @@ import thread
 import time
 import serial 
 
-
+    
 def main():
  GPIO.setmode(GPIO.BOARD)
  
