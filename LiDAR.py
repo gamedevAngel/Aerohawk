@@ -2,7 +2,7 @@ import math
 import time
 from dataclasses import dataclass
 from typing import List, Optional
-from rplidar import RPLidar
+import rplidar
 
 # LiDAR will be offseted so adjust as needed, 
 ANGLE_OFFSET = 0.0
@@ -37,7 +37,7 @@ def normalize_angle(angle_deg: float) -> float:
 
 class Lidar:
     def __init__(self, port: str):
-        self.device = RPLidar(port, baudrate=LIDAR_BAUDRATE)
+        self.device = rplidar.RPLidar(port, baudrate=LIDAR_BAUDRATE)
         self.last_scan: List[LidarPoint] = []
 
     def get_scan(self) -> List[LidarPoint]:
@@ -92,7 +92,7 @@ if __name__ == "__main__":
                         f"Nearest obstacle: {closest.distance:.0f}mm "
                         f"at {closest.angle:.1f} degrees "
                         f"(x={closest.x:.0f}, y={closest.y:.0f})"
-                    )
+                        )
                 else:
                     print("No obstacles detected in front cone.")
                 time.sleep(1)
