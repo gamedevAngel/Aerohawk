@@ -1,7 +1,7 @@
-import jetson.GPIO as GPIO
+import Jetson.GPIO as GPIO
 import LiDAR as LiDAR
 import math
-import thread
+import threading
 import time
 import serial 
 

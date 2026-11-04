@@ -1,5 +1,7 @@
 from adafruit_servokit import ServoKit
-import sleep
+from gpiozero import LED
+import time
+
 #subject to change for motor connection
 motorChannel = 0
 ServoChannel = 2
@@ -7,7 +9,7 @@ ServoChannel = 2
 #kit.continuous_servo[1].throttle = 0.5 || -0.5
 
 kit = ServoKit(channels=16)
-kit.continuous_servo[channel].throttle = 0.2  
+kit.continuous_servo[motorChannel].throttle = 0.2  
 
 #inverse speed if necessary
 def move_forward(speed):
