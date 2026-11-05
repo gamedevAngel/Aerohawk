@@ -1,29 +1,58 @@
 from adafruit_servokit import ServoKit
-from gpiozero import LED
+
 import time
 
-#subject to change for motor connection
-motorChannel = 0
-ServoChannel = 2
+currentTime = time.perf_counter()
+DeadTime = .05
+TransChannel = 15 #subject to change for transmission connection
+ForwardChannel = 1 #subject to change for motor connection
+ReverseChannel = 2 #subject to change for motor connection
 
-#kit.continuous_servo[1].throttle = 0.5 || -0.5
+#subject to change based off max angle of servo
+FirstGearAngle = 0
+SecondGearAngle = 150
 
-kit = ServoKit(channels=16)
-kit.continuous_servo[motorChannel].throttle = 0.2  
+#initialize 16-channels
+kit = ServoKit(channels=16) #Transmistion
+
 
 #inverse speed if necessary
+
+def _deadTime():
+    dead = time.perf_counter() - currentTime < DeadTime
+    if dead:
+        currentTime = time.perf_counter()
+        return True
+    return False
+
+def _adjustSpeed(channel: str,speed):
+    if channel == "forward":
+        kit.servo[ReverseChannel].angle = 0
+        currentTime = time.perf_counter()
+        time.sleep(DeadTime - .005)
+        kit.servo[ForwardChannel].angle = int(speed / 100 * 65535)
+    elif channel == "reverse":
+        currentTime = time.perf_counter()
+        time.sleep(DeadTime - .005)
+        kit.servo[ReverseChannel].angle = int(speed / 100 * 65535)
+
 def move_forward(speed):
-    kit.continuous_servo[channel].throttle = speed
+    if _deadTime(): return
+    _adjustSpeed("forward", speed)
 
 def move_backward(speed):
-    kit.continuous_servo[channel].throttle = speed
+    if _deadTime(): return
+    _adjustSpeed("reverse", speed)
 
 def stop():
-    kit.continuous_servo[channel].throttle = 0.0
+    kit.servo[TransChannel].angle = 0.0
+
+def _adjustTransmission(range: int[1-10]):
+    kit.servo[TransChannel].angle = ((range-1)*SecondGearAngle)/9
 
 def turn_left(turn_radius):
-    kit.continuous_servo[channel].throttle = speed
+    kit.servo[TransChannel].angle = speed
     
 def turn_right(turn_radius):
-    kit.continuous_servo[channel].throttle = speed
+    kit.servo[TransChannel].angle = speed
    
