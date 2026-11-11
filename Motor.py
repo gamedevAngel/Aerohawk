@@ -4,14 +4,20 @@ import time
 
 currentTime = time.perf_counter()
 DeadTime = .05
-TransChannel = 15 #subject to change for transmission connection
+
+CurrentChannel = "Stop"
 ForwardChannel = 1 #subject to change for motor connection
 ReverseChannel = 2 #subject to change for motor connection
+DirectionChannel = 3 #subject to change for Turn Servo connection
+TransChannel = 15 #subject to change for transmission connection
 
 #subject to change based off max angle of servo
 FirstGearAngle = 0
 SecondGearAngle = 150
-
+ServoRadiusLimit = {
+    "Left": 45,
+    "Right": 135,
+}
 #initialize 16-channels
 kit = ServoKit(channels=16) #Transmistion
 
@@ -35,6 +41,9 @@ def _adjustSpeed(channel: str,speed):
         currentTime = time.perf_counter()
         time.sleep(DeadTime - .005)
         kit.servo[ReverseChannel].angle = int(speed / 100 * 65535)
+    else:
+        currentTime = time.perf_counter()
+        kit.servo[ReverseChannel].angle = 0
 
 def move_forward(speed):
     if _deadTime(): return
@@ -44,15 +53,22 @@ def move_backward(speed):
     if _deadTime(): return
     _adjustSpeed("reverse", speed)
 
-def stop():
+def Stop_Motor():
     kit.servo[TransChannel].angle = 0.0
-
+    if _deadTime(): return
+    _adjustSpeed("Stop")
+    
 def _adjustTransmission(range: int[1-10]):
     kit.servo[TransChannel].angle = ((range-1)*SecondGearAngle)/9
 
 def turn_left(turn_radius):
-    kit.servo[TransChannel].angle = speed
+
+    if turn_radius < ServoRadiusLimit["Left"] or turn_radius > ServoRadiusLimit["Right"]:
+        return
+    kit.servo[DirectionChannel].angle = turn_radius
     
 def turn_right(turn_radius):
-    kit.servo[TransChannel].angle = speed
+    if turn_radius < ServoRadiusLimit["Left"] or turn_radius > ServoRadiusLimit["Right"]:
+        return
+    kit.servo[DirectionChannel].angle = turn_radius
    

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import math
 import time
 from dataclasses import dataclass
@@ -80,7 +81,7 @@ class Lidar:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
 
-
+print('Lidar script loaded')
 if __name__ == "__main__":
     with Lidar(port="/dev/ttyUSB0") as lidar:
         try:
