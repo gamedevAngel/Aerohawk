@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
 import math
 import time
 from dataclasses import dataclass
 from typing import List, Optional
-import rplidar
+
 
 # LiDAR will be offseted so adjust as needed, 
 ANGLE_OFFSET = 0.0
@@ -82,20 +81,20 @@ class Lidar:
         self.close()
 
 print('Lidar script loaded')
-if __name__ == "__main__":
-    with Lidar(port="/dev/ttyUSB0") as lidar:
-        try:
-            while True:
-                scan = lidar.get_scan()
-                closest = lidar.nearest_obstacle(scan=scan)
-                if closest:
-                    print(
-                        f"Nearest obstacle: {closest.distance:.0f}mm "
-                        f"at {closest.angle:.1f} degrees "
-                        f"(x={closest.x:.0f}, y={closest.y:.0f})"
-                        )
-                else:
-                    print("No obstacles detected in front cone.")
-                time.sleep(1)
-        except KeyboardInterrupt:
-            print("Stopping...")
+# if __name__ == "__main__":
+#     with Lidar(port="/dev/ttyUSB0") as lidar:
+#         try:
+#             while True:
+#                 scan = lidar.get_scan()
+#                 closest = lidar.nearest_obstacle(scan=scan)
+#                 if closest:
+#                     print(
+#                         f"Nearest obstacle: {closest.distance:.0f}mm "
+#                         f"at {closest.angle:.1f} degrees "
+#                         f"(x={closest.x:.0f}, y={closest.y:.0f})"
+#                         )
+#                 else:
+#                     print("No obstacles detected in front cone.")
+#                 time.sleep(1)
+#         except KeyboardInterrupt:
+#             print("Stopping...")
