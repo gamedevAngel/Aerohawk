@@ -1,0 +1,40 @@
+# THE ONLY place drive settings live (like a Roblox config ModuleScript).
+# drive_node loads every value below automatically, and `python3 hardware.py`
+# reads this same file. Change numbers here, never in the code.
+# Every setting below is required - delete one and drive_node refuses to start.
+
+drive_node:
+  ros__parameters:
+    # ---- PCA9685 board ----
+    i2c_bus: 7                 # PLACEHOLDER - confirm with: sudo i2cdetect -y -r 7
+    pca9685_address: 64        # 64 = 0x40, the PCA9685 default
+    pwm_frequency: 50.0        # servo needs 50 Hz; every channel shares it
+
+    # ---- PCA9685 channels: ALL PLACEHOLDERS, NOT CONFIRMED ----
+    steering_channel: 0        # PLACEHOLDER
+    rpwm_channel: 1            # PLACEHOLDER - IBT-2 RPWM (forward)
+    lpwm_channel: 2            # PLACEHOLDER - IBT-2 LPWM (reverse)
+    r_en_channel: 3            # PLACEHOLDER - IBT-2 R_EN
+    l_en_channel: 4            # PLACEHOLDER - IBT-2 L_EN
+
+    # ---- steering servo (tune on the car so full lock doesn't strain) ----
+    steering_left_us: 1000
+    steering_center_us: 1500
+    steering_right_us: 2000
+    steering_invert: false     # true if left/right are backwards
+    max_steering_angle_deg: 30.0   # PLACEHOLDER - measure the wheels at full lock
+
+    # ---- drive motor (IBT-2) ----
+    max_duty: 0.40             # speed cap: full command = 40% power
+    ramp_per_second: 1.0       # 0 -> full speed in 1 second
+    reverse_pause_s: 0.3       # wait at zero before changing direction
+    motor_invert: false        # true if forward drives backwards
+
+    # ---- car geometry / command scaling ----
+    max_speed_mps: 1.0         # /cmd_vel speed that equals full (capped) power
+    wheelbase_m: 0.25          # PLACEHOLDER - measure front axle to rear axle
+    min_steer_speed_mps: 0.2   # lets the wheels turn while stopped
+
+    # ---- safety ----
+    cmd_timeout_s: 0.5         # no command for this long = stop
+    update_rate_hz: 50.0
