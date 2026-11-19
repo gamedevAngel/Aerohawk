@@ -9,7 +9,10 @@ How to use: SSH into the Jetson from your PC, then run
 (drive_node must be running in another terminal.)
 
 Publishes /cmd_vel 10 times per second, which keeps drive_node's safety stop happy.
-If this program closes or Wi-Fi drops, drive_node stops the car on its own.
+If this program closes, drive_node stops the car on its own within 0.5 s.
+This runs ON THE JETSON, so a Wi-Fi drop only stops the car once SSH closes this
+session - set ClientAliveInterval 1 / ClientAliveCountMax 3 in /etc/ssh/sshd_config,
+and don't run this inside tmux or screen.
 """
 
 import select
